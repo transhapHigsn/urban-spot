@@ -1,17 +1,22 @@
 provider "aws" {
-  region  = "us-east-2"
-  profile = "default"
+  region  = var.region
+  profile = var.profile
 }
 
-module "prashant-vpc" {
+data "aws_availability_zones" "available" {
+  state = "available"
+}
+
+module "dev-vpc" {
   source = "terraform-aws-modules/vpc/aws"
 
-  name = "prashant-vpc"
+  name = "dev-vpc"
   cidr = "10.0.0.0/16"
 
-  azs = ["us-east-2a"]
+  azs = data.aws_availability_zones.available.names
+
   # private_subnets = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
-  public_subnets = ["10.0.101.0/24"]
+  public_subnets = ["10.0.101.0/24", "10.0.102.0/24", "10.0.103.0/24"]
 
   enable_nat_gateway   = false
   single_nat_gateway   = false
@@ -22,18 +27,11 @@ module "prashant-vpc" {
   tags = {
     Terraform                                   = "true"
     Environment                                 = "dev"
-    Name                                        = "prashant-vpc"
+    Name                                        = "dev-vpc"
     "KubernetesCluster"                         = var.cluster_name
     "kubernetes.io/cluster/${var.cluster_name}" = "owned"
   }
 }
-
-
-resource "aws_key_pair" "deployer" {
-  key_name   = "deployer-key"
-  public_key = var.deployer-public-key
-}
-
 
 resource "aws_security_group_rule" "all_public_access" {
   type              = "ingress"
@@ -41,39 +39,6 @@ resource "aws_security_group_rule" "all_public_access" {
   to_port           = 0
   protocol          = "-1"
   cidr_blocks       = ["0.0.0.0/0"]
-  security_group_id = module.prashant-vpc.default_security_group_id
+  security_group_id = module.dev-vpc.default_security_group_id
 
-}
-
-
-resource "aws_iam_role" "k3s-master-role" {
-  name               = "k3s-master-role"
-  assume_role_policy = file("data/master_iam_policy.json")
-}
-
-resource "aws_iam_instance_profile" "k3s-master-role-profile" {
-  name = "k3s-master-role-profile"
-  role = aws_iam_role.k3s-master-role.name
-}
-
-resource "aws_iam_policy" "master_policy" {
-  name        = "master-policy"
-  description = "Policy for master"
-  policy      = file("data/master_policy.json")
-}
-
-resource "aws_iam_role_policy_attachment" "master_attach_policy" {
-  role       = aws_iam_role.k3s-master-role.name
-  policy_arn = aws_iam_policy.master_policy.arn
-}
-
-resource "aws_iam_policy" "ccm_policy" {
-  name        = "ccm-policy"
-  description = "Policy for ccm"
-  policy      = file("data/ccm_master_policy.json")
-}
-
-resource "aws_iam_role_policy_attachment" "ccm_attach_policy" {
-  role       = aws_iam_role.k3s-master-role.name
-  policy_arn = aws_iam_policy.ccm_policy.arn
 }
