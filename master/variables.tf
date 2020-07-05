@@ -18,3 +18,15 @@ variable "master_instance_type" {
   type    = string
   default = "t3a.large"
 }
+
+# ALERT!!!! copy these from output of vpc module.
+variable "public_subnets" {
+  type    = list(string)
+  default = []
+}
+
+# ALERT!!!! copy these from output of vpc module.
+variable "private_subnets" {
+  type    = list(string)
+  default = []
+}
