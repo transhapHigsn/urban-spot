@@ -20,11 +20,11 @@ variable "cluster_name" {
 }
 
 variable "ami_id" {
-    type = string
-    default = "ami-026dea5602e368e96"
+  type    = string
+  default = "ami-026dea5602e368e96"
 }
 
 variable "worker_instance_type" {
-    type = string
-    default = "t3a.micro"
+  type    = string
+  default = "t3a.micro"
 }
