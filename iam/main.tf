@@ -1,6 +1,6 @@
 provider "aws" {
-  region  = "us-east-2"
-  profile = "default"
+  region  = var.region
+  profile = var.profile
 }
 
 resource "aws_iam_role" "k3s-master-role" {
