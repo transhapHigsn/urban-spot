@@ -169,13 +169,13 @@ spec:
             - --cloud-provider=aws
             - --skip-nodes-with-local-storage=false
             - --expander=least-waste
-            - --node-group-auto-discovery=asg:tag=k8s.io/cluster-autoscaler/enabled,k8s.io/cluster-autoscaler/calico-check
+            - --node-group-auto-discovery=asg:tag=k8s.io/cluster-autoscaler/enabled,k8s.io/cluster-autoscaler/${CLUSTER_NAME}
             - --skip-nodes-with-system-pods=false
             - --scale-down-delay-after-add=2m
             - --scale-down-delay-after-failure=2m
           env:
             - name: AWS_REGION
-              value: us-east-2
+              value: ${CLUSTER_REGION}
           volumeMounts:
             - name: ssl-certs
               mountPath: /etc/ssl/certs/ca-certificates.crt
