@@ -114,17 +114,6 @@ subjects:
   - kind: ServiceAccount
     name: cluster-autoscaler
     namespace: kube-system
----
-
-# apiVersion: v1
-# kind: Secret
-# metadata:
-#   name: aws-secret
-#   namespace: kube-system
-# type: Opaque
-# data:
-#   aws_access_key_id: base64_aws_access_key_id
-#   aws_secret_access_key: base64_aws_secret_access_key
 
 ---
 apiVersion: apps/v1
@@ -149,7 +138,7 @@ spec:
     spec:
       serviceAccountName: cluster-autoscaler
       containers:
-        - image: us.gcr.io/k8s-artifacts-prod/autoscaling/cluster-autoscaler:v1.17.2
+        - image: us.gcr.io/k8s-artifacts-prod/autoscaling/cluster-autoscaler:v1.18.1
           name: cluster-autoscaler
           livenessProbe:
             httpGet:
@@ -180,23 +169,13 @@ spec:
             - --cloud-provider=aws
             - --skip-nodes-with-local-storage=false
             - --expander=least-waste
-            - --node-group-auto-discovery=asg:tag=k8s.io/cluster-autoscaler/enabled,k8s.io/cluster-autoscaler/k3s-demo
+            - --node-group-auto-discovery=asg:tag=k8s.io/cluster-autoscaler/enabled,k8s.io/cluster-autoscaler/calico-check
             - --skip-nodes-with-system-pods=false
             - --scale-down-delay-after-add=2m
             - --scale-down-delay-after-failure=2m
           env:
             - name: AWS_REGION
               value: us-east-2
-            # - name: AWS_ACCESS_KEY_ID
-            #   valueFrom:
-            #     secretKeyRef:
-            #       name: aws-secret
-            #       key: aws_access_key_id
-            # - name: AWS_SECRET_ACCESS_KEY
-            #   valueFrom:
-            #     secretKeyRef:
-            #       name: aws-secret
-            #       key: aws_secret_access_key
           volumeMounts:
             - name: ssl-certs
               mountPath: /etc/ssl/certs/ca-certificates.crt
@@ -205,4 +184,4 @@ spec:
       volumes:
         - name: ssl-certs
           hostPath:
-            path: "/etc/ssl/certs/ca-certificates.crt"
+            path: "/etc/ssl/certs/ca-bundle.crt"
