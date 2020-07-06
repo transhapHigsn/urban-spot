@@ -22,7 +22,7 @@ EOF
 export INSTALL_K3S_VERSION=v1.18.4+k3s1
 export K3S_NODE_NAME=$(curl http://169.254.169.254/latest/meta-data/local-hostname)
 export PROVIDER_ID=aws:///$(curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone)/$(curl -s http://169.254.169.254/latest/meta-data/instance-id)
-export K3S_TOKEN=dqlitecluster123
+export K3S_TOKEN=${cluster_server_token}
 
 export INSTALL_K3S_EXEC=" \
     --server https://${MAIN_PUBLIC_IP}:6443 \

@@ -26,6 +26,18 @@ data "aws_instance" "master" {
   }
 }
 
+data "aws_subnet" "public_subnet_1" {
+  cidr_block = var.public_subnet_cidr_blocks[0]
+}
+
+data "aws_subnet" "public_subnet_2" {
+  cidr_block = var.public_subnet_cidr_blocks[1]
+}
+
+data "aws_subnet" "public_subnet_3" {
+  cidr_block = var.public_subnet_cidr_blocks[2]
+}
+
 resource "aws_instance" "worker-node-12" {
   ami                  = var.ami_id
   instance_type        = var.worker_instance_type
