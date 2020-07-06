@@ -10,3 +10,4 @@ install-k3s-1.sh
 .vscode
 *.tfstate*
 .history
+node-token

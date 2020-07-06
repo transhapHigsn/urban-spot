@@ -1,6 +1,6 @@
 provider "aws" {
-  region  = "us-east-2"
-  profile = "default"
+  region  = var.region
+  profile = var.profile
 }
 
 data "aws_instance" "master" {
@@ -41,7 +41,7 @@ data "aws_subnet" "public_subnet_3" {
 resource "aws_instance" "worker-node-12" {
   ami                  = var.ami_id
   instance_type        = var.worker_instance_type
-  subnet_id            = var.public_subnets[0]
+  subnet_id            = data.aws_subnet.public_subnet_1.id
   key_name             = data.aws_instance.master.key_name
   iam_instance_profile = data.aws_instance.master.iam_instance_profile
 
@@ -69,7 +69,7 @@ resource "aws_instance" "worker-node-12" {
 resource "aws_instance" "worker-node-11" {
   ami                  = var.ami_id
   instance_type        = var.worker_instance_type
-  subnet_id            = var.public_subnets[1]
+  subnet_id            = data.aws_subnet.public_subnet_2.id
   key_name             = data.aws_instance.master.key_name
   iam_instance_profile = data.aws_instance.master.iam_instance_profile
 
