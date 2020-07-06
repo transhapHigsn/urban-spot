@@ -16,8 +16,7 @@ sudo usermod -a -G docker ec2-user
 # sudo apt install -y golang-cfssl (todo convert this into amazon linux 2 command)
 
 ### run docker registry.
-
-docker run -d -p 5000:5000 --restart=always -e REGISTRY_STORAGE_DELETE_ENABLED=true --name registry registry:2
+sudo docker run -d -p 5000:5000 --restart=always -e REGISTRY_STORAGE_DELETE_ENABLED=true --name registry registry:2
 
 ### allow insecure registries in docker daemon
 
@@ -29,7 +28,6 @@ cat << EOF >> /etc/docker/daemon.json
 EOF
 
 ### restart docker service, so that above values are updated for docker daemon
-
 sudo service docker restart
 
 ### add registry as private registry in k3s configuration
