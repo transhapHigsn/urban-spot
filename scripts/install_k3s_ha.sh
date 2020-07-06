@@ -1,65 +1,24 @@
 #!/bin/bash
 
-### installing essentials
-
-sudo yum update -y
-sudo yum install git -y
-
-### install docker for docker registry.
-
-sudo amazon-linux-extras install docker -y
-sudo service docker start
-sudo usermod -a -G docker ec2-user
-
-### install custom metrics server dependency
-
-# sudo apt install -y golang-cfssl (todo convert this into amazon linux 2 command)
-
-### run docker registry.
-
-docker run -d -p 5000:5000 --restart=always -e REGISTRY_STORAGE_DELETE_ENABLED=true --name registry registry:2
-
-### allow insecure registries in docker daemon
-
 export INSTANCE_IP=$(curl http://169.254.169.254/latest/meta-data/local-ipv4)
 export NODE_PUBLIC_IP=$(curl http://169.254.169.254/latest/meta-data/public-ipv4)
-
-cat << EOF >> /etc/docker/daemon.json
-{"insecure-registries": ["$INSTANCE_IP:5000"]}
-EOF
-
-### restart docker service, so that above values are updated for docker daemon
-
-sudo service docker restart
-
-### add registry as private registry in k3s configuration
-
-cat << EOF >> /home/ec2-user/registries.yaml
-mirrors:
-  docker.io:
-    endpoint:
-      - "https://registry-1.docker.io"
-  $INSTANCE_IP:5000:
-    endpoint:
-      - "http://$INSTANCE_IP:5000"
-EOF
 
 ### install k3s server
 
 export INSTALL_K3S_VERSION=v1.18.4+k3s1
 export K3S_NODE_NAME=$(curl http://169.254.169.254/latest/meta-data/local-hostname)
 export PROVIDER_ID=aws:///$(curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone)/$(curl -s http://169.254.169.254/latest/meta-data/instance-id)
-export K3S_TOKEN=${cluster_server_token}
+export K3S_TOKEN=$CLUSTER_SECRET
 
 export INSTALL_K3S_EXEC=" \
     --cluster-init \
     --flannel-backend=none \
-    --cluster-cidr=192.168.0.0/16
+    --cluster-cidr=192.168.0.0/16 \
     --disable-cloud-controller \
     --kubelet-arg cloud-provider=external \
     --write-kubeconfig-mode 644 \
     --disable traefik \
-    --node-label KubernetesCluster=${cluster_name} \
+    --node-label KubernetesCluster=calico-check \
     --node-label groupRole=master \
     --private-registry \"/home/ec2-user/registries.yaml\" \
     --tls-san $NODE_PUBLIC_IP \
@@ -68,12 +27,12 @@ export INSTALL_K3S_EXEC=" \
 
 curl -sfL https://get.k3s.io | sh -
 
-### copy node token for scp command
-echo -n $(sudo cat /var/lib/rancher/k3s/server/node-token) > /home/ec2-user/node-token
-
 ### run aws cloud controller manager manifest.
 kubectl apply -f https://raw.githubusercontent.com/transhapHigsn/cloud-provider-aws/higsn-dev/manifests/rbac.yaml
 kubectl apply -f https://raw.githubusercontent.com/transhapHigsn/cloud-provider-aws/higsn-dev/manifests/aws-cloud-controller-manager-daemonset.yaml
 
 ### run calico manifest here.
 kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml
+
+### kubectl apply -f https://gist.githubusercontent.com/transhapHigsn/d7c06f644fab01fba95e742e6b141f24/raw/fd84f29aeb9f35b8fccdb9e892008291ba6fdf51/calico.yaml
+
