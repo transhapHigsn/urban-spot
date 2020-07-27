@@ -1,0 +1,13 @@
+.terraform
+higsn.pub
+MyKeyPair.pem
+bastion.tmpl
+install-k3s-1.sh
+*-kubeconfig.yml
+*-kubeconfig.yaml
+
+
+.vscode
+*.tfstate*
+.history
+node-token
