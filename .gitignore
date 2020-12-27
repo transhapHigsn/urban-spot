@@ -11,3 +11,10 @@ install-k3s-1.sh
 *.tfstate*
 .history
 node-token
+.env
+
+.vscode
+.history
+.terraform
+
+checkov.txt
