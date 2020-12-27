@@ -9,12 +9,12 @@ variable "profile" {
 }
 
 variable "deployer-public-key" {
-  type    = string
+  type = string
 }
 
 variable "cluster_name" {
   type    = string
-  default = "k3s-demo"
+  default = "urban-spot"
 }
 
 variable "ami_id" {
@@ -28,7 +28,7 @@ variable "master_instance_type" {
 }
 
 variable "cluster_server_token" {
-  type = string
+  type    = string
   default = "randomstring123"
 }
 

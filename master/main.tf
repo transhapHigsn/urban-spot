@@ -35,7 +35,7 @@ resource "aws_instance" "master-node-12" {
   # vpc_security_group_ids = [module.bastion.private_instances_security_group]
 
   user_data = templatefile("data/main-server-init.tmpl", {
-    cluster_name = var.cluster_name,
+    cluster_name  = var.cluster_name,
     cluster_token = var.cluster_server_token
   })
 
@@ -65,10 +65,10 @@ resource "aws_instance" "master-node-11" {
   # vpc_security_group_ids = [module.bastion.private_instances_security_group]
 
   user_data = templatefile("data/server-init.tmpl", {
-    cluster_name   = var.cluster_name,
-    registry_ip      = aws_instance.master-node-12.private_ip,
+    cluster_name      = var.cluster_name,
+    registry_ip       = aws_instance.master-node-12.private_ip,
     cluster_public_ip = aws_instance.master-node-12.public_ip,
-    cluster_token = var.cluster_server_token
+    cluster_token     = var.cluster_server_token
   })
 
   tags = {

@@ -2,7 +2,7 @@
 
 set -e
 
-BRANCH_NAME="etch_ha"
+BRANCH_NAME=etcd_ha
 
 ### installing essentials
 
@@ -11,12 +11,12 @@ sudo yum install git -y
 
 ### setup docker registry
 
-registry_setup_url="https://raw.githubusercontent.com/transhapHigsn/urban-spot/$BRANCH_NAME/scripts/setup_registry_amazon_linux.sh"
-curl -sfL $registry_setup_url | sh -
+registry_setup_url=https://raw.githubusercontent.com/transhapHigsn/urban-spot/$BRANCH_NAME/scripts/setup_registry_amazon_linux.sh
+curl -sfL $registry_setup_url | sudo sh -
 
 ### pull all images into private registry
 
-url="https://raw.githubusercontent.com/transhapHigsn/urban-spot/$BRANCH_NAME/scripts/read_images.sh"
+url=https://raw.githubusercontent.com/transhapHigsn/urban-spot/$BRANCH_NAME/scripts/read_images.sh
 curl -sfL $url | sh -
 
 ### install k3s server
@@ -24,7 +24,7 @@ curl -sfL $url | sh -
 export K3S_TOKEN=${cluster_token}
 export CLUSTER_NAME=${cluster_name}
 
-k3s_install_url="https://raw.githubusercontent.com/transhapHigsn/urban-spot/$BRANCH_NAME/scripts/install_primary.sh"
+k3s_install_url=https://raw.githubusercontent.com/transhapHigsn/urban-spot/$BRANCH_NAME/scripts/install_primary.sh
 curl -sfL $k3s_install_url | sh -
 
 ### run aws cloud controller manager manifest.
