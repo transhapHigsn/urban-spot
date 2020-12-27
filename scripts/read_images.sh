@@ -14,9 +14,9 @@ do
 
     local_image_name=$(echo $PRIV_IP:5000/$org_name/$name)
 
-    docker pull $LINE
-    docker tag $final_image_name $local_image_name
-    docker push $local_image_name
+    sudo docker pull $LINE
+    sudo docker tag $final_image_name $local_image_name
+    sudo docker push $local_image_name
 
 done < $(pwd)/images.txt
 
