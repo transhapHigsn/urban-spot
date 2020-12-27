@@ -2,12 +2,12 @@
 
 set -e
 
-BRANCH_NAME="etcd_ha"
+BRANCH_NAME=master
 
 export K3S_TOKEN=${cluster_token}
 export PRIMARY_IP=${cluster_public_ip}
 export CLUSTER_NAME=${cluster_name}
 export REGISTRY_IP=${registry_ip}
 
-url="https://raw.githubusercontent.com/transhapHigsn/urban-spot/$BRANCH_NAME/scripts/install_secondary.sh"
+url=https://raw.githubusercontent.com/transhapHigsn/urban-spot/$BRANCH_NAME/scripts/install_secondary.sh
 curl -sfL $url | sh -

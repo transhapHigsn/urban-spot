@@ -6,12 +6,13 @@ Note: Setup is done exclusively for Amazon Linux 2 AMI.
 
 ## Features
 
+- High Availability setup
+- Air Gap Install
+- Calico CNI
+- Cluster auto-scaler
+- Private docker registry for cluster
 - Amazon Linux 2
 - AWS Cloud controller manager
-- Calico CNI
-- Private docker registry for cluster
-- Insecure registry access within cluster
-- Support for Cluster auto-scaler
 
 ## RoadMap
 
