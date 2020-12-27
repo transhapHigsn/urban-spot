@@ -36,7 +36,7 @@ resource "aws_instance" "master-node-12" {
 
   user_data = templatefile("data/main-server-init.tmpl", {
     cluster_name = var.cluster_name,
-    cluster_server_token = var.cluster_server_token
+    cluster_token = var.cluster_server_token
   })
 
   tags = {
@@ -66,9 +66,9 @@ resource "aws_instance" "master-node-11" {
 
   user_data = templatefile("data/server-init.tmpl", {
     cluster_name   = var.cluster_name,
-    DOCKER_IP      = aws_instance.master-node-12.private_ip,
-    MAIN_PUBLIC_IP = aws_instance.master-node-12.public_ip,
-    cluster_server_token = var.cluster_server_token
+    registry_ip      = aws_instance.master-node-12.private_ip,
+    cluster_public_ip = aws_instance.master-node-12.public_ip,
+    cluster_token = var.cluster_server_token
   })
 
   tags = {
@@ -94,9 +94,9 @@ resource "aws_instance" "master-node-10" {
 
   user_data = templatefile("data/server-init.tmpl", {
     cluster_name   = var.cluster_name,
-    DOCKER_IP      = aws_instance.master-node-12.private_ip,
-    MAIN_PUBLIC_IP = aws_instance.master-node-12.public_ip,
-    cluster_server_token = var.cluster_server_token
+    registry_ip      = aws_instance.master-node-12.private_ip,
+    cluster_public_ip = aws_instance.master-node-12.public_ip,
+    cluster_token = var.cluster_server_token
   })
 
   tags = {
