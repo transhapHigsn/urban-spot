@@ -1,6 +1,6 @@
-# Urban Spot: K3S HA Setup using DQlite and Calico CNI on AWS
+# Urban Spot: K3S HA Setup using Embedded Etcd and Calico CNI on AWS
 
-This setup tries to implement DQLite experimental high availability setup of k3s. Apart from that, setup uses Calico CNI instead of default Flannel CNI.
+This setup tries to implement Embedded etcd experimental high availability setup of k3s. Apart from that, setup uses Calico CNI instead of default Flannel CNI.
 
 Note: Setup is done exclusively for Amazon Linux 2 AMI.
 
@@ -11,7 +11,6 @@ Note: Setup is done exclusively for Amazon Linux 2 AMI.
 - Calico CNI
 - Private docker registry for cluster
 - Insecure registry access within cluster
-- HAProxy Ingress Controller
 - Support for Cluster auto-scaler
 
 ## RoadMap
@@ -33,14 +32,14 @@ The terraform scripts are divided into different modules, all are standalone. Yo
 
 All of the modules are fully customizable. Terraform scripts will run even if you want to go with default. For first time, run modules by executing following commands from the root of the module:
 
-```
+```bash
 terraform init
 terraform apply -auto-approve
 ```
 
 Except for Master:
 
-```
+```bash
 terraform init
 export PUBLIC_SSH_KEY=$(cat /path/to/public/ssh/key)
 terraform apply -var="deployer-public-key=$PUBLIC_SSH_KEY"
@@ -50,12 +49,14 @@ Note: Worker modules uses ssh key used for master module, but you don't have to 
 
 On following runs:
 
-```terraform apply -auto-approve```
+```bash
+terraform apply -auto-approve
+```
 
-will work.
+will work. To destroy provisioned resources in a module, just run
 
-To destroy provisioned resources in a module, just run
+```bash
+terraform destroy -auto-approve
+```
 
-```terraform destroy -auto-approve```.
-
-<b>Disclaimer: This is just for testing and development purposes, do not use this for production environment.</b>
+**Disclaimer: This is just for testing and development purposes, do not use this for production environment.**

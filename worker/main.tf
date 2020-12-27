@@ -46,14 +46,12 @@ resource "aws_instance" "worker-node-12" {
   iam_instance_profile = data.aws_instance.master.iam_instance_profile
 
   user_data = templatefile("data/agent-init.tmpl", {
-    master_ip       = data.aws_instance.master.public_ip,
-    master_local_ip = data.aws_instance.master.private_ip,
-    node_token      = var.k3s_token,
-    cluster_name    = var.cluster_name,
-    label           = "main-stream",
-    value           = "false",
-    instance_env    = "dev",
-    purpose         = "dev"
+    master_public_ip  = data.aws_instance.master.public_ip,
+    master_private_ip = data.aws_instance.master.private_ip,
+    agent_token       = var.k3s_token,
+    cluster_name      = var.cluster_name,
+    label             = "main-stream",
+    value             = "false"
   })
 
   tags = {
@@ -74,14 +72,12 @@ resource "aws_instance" "worker-node-11" {
   iam_instance_profile = data.aws_instance.master.iam_instance_profile
 
   user_data = templatefile("data/agent-init.tmpl", {
-    master_ip       = data.aws_instance.master.public_ip,
-    master_local_ip = data.aws_instance.master.private_ip,
-    node_token      = var.k3s_token,
-    cluster_name    = var.cluster_name,
-    label           = "main-stream",
-    value           = "false",
-    instance_env    = "dev",
-    purpose         = "dev"
+    master_public_ip  = data.aws_instance.master.public_ip,
+    master_private_ip = data.aws_instance.master.private_ip,
+    agent_token       = var.k3s_token,
+    cluster_name      = var.cluster_name,
+    label             = "main-stream",
+    value             = "false"
   })
 
   tags = {

@@ -1,6 +1,6 @@
 variable "cluster_name" {
   type    = string
-  default = "k3s-demo"
+  default = "urban-spot"
 }
 
 variable "region" {
