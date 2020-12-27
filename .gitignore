@@ -18,3 +18,5 @@ node-token
 .terraform
 
 checkov.txt
+
+pulumi/
