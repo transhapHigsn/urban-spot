@@ -11,7 +11,7 @@ variable "profile" {
 # copy token from master node and paste here.
 variable "k3s_token" {
   type    = string
-  default = "K1055d6435f6c60be8d6ac9c4c7c760b6f8b502ba6fa6c986412aa56f02ffe2d157::server:randomstring123"
+  default = "K1070738a397125f51437451d08bb7da647c6f245f3c627e623a53ad3b691cd9305::server:randomstring123"
 }
 
 variable "asg-enable-metrics" {
@@ -21,7 +21,7 @@ variable "asg-enable-metrics" {
 
 variable "cluster_name" {
   type    = string
-  default = "k3s-demo"
+  default = "urban-spot"
 }
 
 variable "ami_id" {
