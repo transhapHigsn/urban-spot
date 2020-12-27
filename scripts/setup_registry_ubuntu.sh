@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 sudo apt-get -y update
 sudo apt-get -y install \
     apt-transport-https \
@@ -19,7 +21,10 @@ sudo apt-get -y update
 sudo apt-get -y install docker-ce docker-ce-cli containerd.io
 
 # update this according to cloud provider, this is for upcloud.
-export PRIV_IP=$(curl http://169.254.169.254/metadata/v1/network/interfaces/2/ip_addresses/1/address)
+# export PRIV_IP=$(curl http://169.254.169.254/metadata/v1/network/interfaces/2/ip_addresses/1/address)
+
+# for aws
+PRIV_IP=$(curl http://169.254.169.254/latest/meta-data/local-ipv4)
 
 cat << EOF >> /etc/docker/daemon.json
 {"insecure-registries": ["$PRIV_IP:5000"]}

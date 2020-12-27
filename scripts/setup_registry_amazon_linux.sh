@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 ### installing essentials
 
 sudo yum update -y

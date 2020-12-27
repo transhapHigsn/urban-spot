@@ -1,7 +1,19 @@
 #!/bin/bash
 
+set -e
+
 # update this according to cloud provider. this is for upcloud.
-PRIV_IP=$(curl http://169.254.169.254/metadata/v1/network/interfaces/2/ip_addresses/1/address)
+# PRIV_IP=$(curl http://169.254.169.254/metadata/v1/network/interfaces/2/ip_addresses/1/address)
+
+# for aws
+PRIV_IP=$(curl http://169.254.169.254/latest/meta-data/local-ipv4)
+
+
+### download images.txt files in current directory.
+
+BRANCH_NAME="etcd_ha"
+url="https://raw.githubusercontent.com/transhapHigsn/urban-spot/$BRANCH_NAME/images.txt"
+wget $url
 
 while read LINE
 do
