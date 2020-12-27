@@ -11,10 +11,10 @@ Note: Setup is done exclusively for Amazon Linux 2 AMI.
 - Calico CNI
 - Private docker registry for cluster
 - Insecure registry access within cluster
+- Support for Cluster auto-scaler
 
 ## RoadMap
 
-- Support for Cluster auto-scaler
 - Single command to provision everything.
 - Stricter security group rules.
 - Use kube2iam/kiam for IAM roles.
